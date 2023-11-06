@@ -44,6 +44,18 @@ class Guest{
                 bonus += 35
                 sum += 2800
                 break;
+            case '마스터':
+                bonus += 38
+                sum += 3200         
+                break;
+            case '그랜드마스터':
+                bonus += 41
+                sum += 3400
+                break;
+            case '챌린저':
+                bonus += 45
+                sum += 3600
+                break
             default: console.log('오류발생')
         }
         switch(티어2){
@@ -59,6 +71,9 @@ class Guest{
                 sum += 300
                 break;
             case '기타':
+                let howmuch = prompt('점수를 입력하세요', '숫자를 입력하세요')
+                sum += Number(howmuch)
+                this.티어2 = howmuch + '점'
                 break;
             default: console.log('오류발생')
         }
