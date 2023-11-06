@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TeamMaker</title>
+    <script src="test.js"></script>
+    <script>
+        let count = 0;
+        let newCount = 0;
+
+        document.addEventListener("DOMContentLoaded", (event)=>{
+            const 이름 = document.querySelector('#이름')
+            const 티어1 = document.querySelector('#tier1')
+            const 티어2 = document.querySelector('#tier2')
+            const addButton = document.querySelector('#add')
+            const guest_list = document.querySelector('#guest-list')
+            const menu = document.querySelector('#menu')
+            const startButton = document.querySelector('#start')
+            const banner = document.querySelector('#banner')
+            const resetButton = document.querySelector('#reset')
+            let save = localStorage.getItem('saveValue')
+            //localStorage 데이터가 있다면 불러오기
+            if(save){
+                users_in_save();
+                for(let member of users){
+                    Guest.setCounter(getMaxID());
+                    if(member.상태 == 1){
+                        createAccount(member);
+                    }
+                }
+                update();
+                console.log(users)
+            }else{//없음 말구~
+                console.log('1')
+            }
+
+            //추가하기 버튼 이벤트 처리-------------------------------------------------------------------------------
+            addButton.addEventListener('click', (event)=>{
+                //사용자 정보를 받아 객체 생성
+                const user = new Guest(이름.value, 티어1.value, 티어2.value)
+                
+                createAccount(user);
+                update();
+
+                // 입력 필드 초기화
+                이름.value = '';
+                티어1.selectedIndex = 0; // 첫 번째 옵션 선택
+                티어2.selectedIndex = 0;
+            })
+
+            //팀 생성하기 버튼 이벤트 처리----------------------------------------------------------------------------
+            startButton.addEventListener('click',(event)=>{
+                //팀 생성 confirm
+                while(1){
+                    let [a, b, newCount] = playGame(count);
+                    console.log(a, b, newCount)
+                    count = newCount;
+                    let sure = confirm(`${printTeam(a, b)}\n확인: 이 팀으로 진행\n취소: 팀 다시 돌리기`)
+                    if(sure){
+                        makeBanner(banner, printTeam(a, b));
+                        break;
+                    }
+                }
+                
+            })
+            //-------------------------------------------------------------------------------------------------------
+            reset.addEventListener('click', (event)=>{
+                if(confirm('정말로 초기화 하시겠습니까?')){
+                    reset_all();
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <h1>Team Maker</h1><p id="menu"></p><div id="banner"></div>
+    <span>이름</span>
+    <input id="이름">
+    <span>티어</span>
+    <select id="tier1">
+        <option>언랭</option><option>아이언</option><option>브론즈</option>
+        <option>실버</option><option>골드</option><option>플레티넘</option>
+        <option>에메랄드</option><option>다이아몬드</option><option>마스터</option>
+        <option>그랜드마스터</option><option>챌린저</option>
+    </select>
+    <select id="tier2">
+        <option>4</option><option>3</option><option>2</option><option>1</option><option>기타</option>
+    </select>
+    <h2></h2><button id="add">추가하기</button><button id="start">팀 생성하기</button><button id="reset">초기화</button>
+    <div id="guest-list"></div>
+</body>
+</html>
